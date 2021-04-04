@@ -1,0 +1,80 @@
+---
+title: "An examination of accessibility to pilot COVID-19 vaccination sites in Hamilton, Ontario"
+author:
+  - name: Antonio Paez
+    email: paezha@mcmaster.ca
+    affiliation: McMaster University
+    footnote: 1
+  - name: Christopher D. Higgins
+    email: cd.higgins@utoronto.ca
+    affiliation: University of Toronto Scarborough
+address:
+  - code: McMaster University
+    address: School of Earth, Environment and Society, McMaster University, Hamilton, ON, L8S 4K1, Canada
+  - code: University of Toronto Scarborough
+    address: Department of Geography & Planning, University of Toronto Scarborough, 1265 Military Trail, Toronto, ON M1C1A4
+footnote:
+  - code: 1
+    text: "Corresponding Author"
+abstract: |
+  Abstract
+
+journal: "Transport Findings"
+date: "`r Sys.Date()`"
+bibliography: References.bib
+#linenumbers: true
+#numbersections: true
+csl: elsevier-harvard.csl
+output: rticles::elsevier_article
+always_allow_html: true
+
+header-includes:
+ \usepackage{float}
+ \usepackage{xcolor}
+ \floatplacement{figure}{H}
+---
+
+```{r install-data-package, include = FALSE}
+# Run only once if needed to install data package `sobiEquity`
+if (!require("vaccHamilton", character.only = TRUE)) {
+      devtools::install_github("https://github.com/paezha/Accessibility-Pharmacies-Hamilton-Vaccines", subdir = "vaccHamilton")
+  }
+```
+
+```{r load-packages, include=FALSE}
+#Load the packages needed to read and work with the data
+#library(circlize)
+library(grid)
+library(gridExtra)
+library(kableExtra)
+library(png)
+#library(readr)
+library(sf)
+library(tidyverse)
+library(vaccHamilton)
+```
+
+Research Questions and Hypotheses
+==========================
+
+Words.
+
+The objective of this paper is to investigate...Using data...we pose the following questions:
+
+- Question 1
+- Question 2
+
+This paper is a reproducible research document [see @Brunsdon2020opening]; the code and data necessary to reproduce the tables and figures are available in a public repository\footnote{\url{https://github.com/paezha/Accessibility-Pharmacies-Hamilton-Vaccines}}
+
+Methods and Data
+============
+
+Words.
+
+Findings
+===================
+
+Words.
+
+References {#references .unnumbered}
+==========

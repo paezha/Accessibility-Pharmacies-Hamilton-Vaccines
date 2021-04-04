@@ -1,0 +1,15 @@
+data_da_2016            Hamilton CMA Dissemination Areas with Selected
+                        Census Information.
+dwelling_network_points_2016
+                        Hamilton Residential Parcels.
+hamilton_cma            Hamilton CMA.
+modes_55to69            Transportation for population in the age group
+                        55 to 69 years old.
+modes_70plus            Transportation for population in the age group
+                        70 years and older.
+pharmacy_locations      Location of pharmacies offering COVID-19
+                        vaccinations.
+ttm_car                 Travel Time Matrix Car
+ttm_transit             Travel Time Matrix Transit
+ttm_walk                Travel Time Matrix Walking
+vaccHamilton            vaccHamilton
