@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7200 64-bit) (preloaded format=pdflatex 2019.10.22)  4 APR 2021 23:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7200 64-bit) (preloaded format=pdflatex 2019.10.22)  5 APR 2021 11:30
 entering extended mode
 **./Accessibility-Vaccination-Sites-Hamilton.tex
 (Accessibility-Vaccination-Sites-Hamilton.tex
@@ -544,48 +544,63 @@ Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
 Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
-) ("C:\Program Files\MiKTeX 2.9\tex/latex/tools\longtable.sty"
+) ("C:\Program Files\MiKTeX 2.9\tex/latex/geometry\geometry.sty"
+Package: geometry 2018/04/16 v5.8 Page Geometry
+\Gm@cnth=\count131
+\Gm@cntv=\count132
+\c@Gm@tempcnt=\count133
+\Gm@bindingoffset=\dimen141
+\Gm@wd@mp=\dimen142
+\Gm@odd@mp=\dimen143
+\Gm@even@mp=\dimen144
+\Gm@layoutwidth=\dimen145
+\Gm@layoutheight=\dimen146
+\Gm@layouthoffset=\dimen147
+\Gm@layoutvoffset=\dimen148
+\Gm@dimlist=\toks29
+("C:\Program Files\MiKTeX 2.9\tex/latex/geometry\geometry.cfg")) ("C:\Program F
+iles\MiKTeX 2.9\tex/latex/tools\longtable.sty"
 Package: longtable 2019/02/06 v4.12 Multi-page Table package (DPC)
 \LTleft=\skip52
 \LTright=\skip53
 \LTpre=\skip54
 \LTpost=\skip55
-\LTchunksize=\count131
-\LTcapwidth=\dimen141
+\LTchunksize=\count134
+\LTcapwidth=\dimen149
 \LT@head=\box36
 \LT@firsthead=\box37
 \LT@foot=\box38
 \LT@lastfoot=\box39
-\LT@cols=\count132
-\LT@rows=\count133
-\c@LT@tables=\count134
-\c@LT@chunks=\count135
-\LT@p@ftn=\toks29
+\LT@cols=\count135
+\LT@rows=\count136
+\c@LT@tables=\count137
+\c@LT@chunks=\count138
+\LT@p@ftn=\toks30
 ) ("C:\Program Files\MiKTeX 2.9\tex/latex/tools\array.sty"
 Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
-\col@sep=\dimen142
+\col@sep=\dimen150
 \ar@mcellbox=\box40
-\extrarowheight=\dimen143
-\NC@list=\toks30
+\extrarowheight=\dimen151
+\NC@list=\toks31
 \extratabsurround=\skip56
 \backup@length=\skip57
 \ar@cellbox=\box41
 ) ("C:\Program Files\MiKTeX 2.9\tex/latex/multirow\multirow.sty"
 Package: multirow 2019/05/31 v2.5 Span multiple rows of a table
 \multirow@colwidth=\skip58
-\multirow@cntb=\count136
+\multirow@cntb=\count139
 \multirow@dima=\skip59
-\bigstrutjot=\dimen144
+\bigstrutjot=\dimen152
 ) ("C:\Program Files\MiKTeX 2.9\tex/latex/wrapfig\wrapfig.sty"
-\wrapoverhang=\dimen145
-\WF@size=\dimen146
-\c@WF@wrappedlines=\count137
+\wrapoverhang=\dimen153
+\WF@size=\dimen154
+\c@WF@wrappedlines=\count140
 \WF@box=\box42
-\WF@everypar=\toks31
+\WF@everypar=\toks32
 Package: wrapfig 2003/01/31  v 3.6
 ) ("C:\Program Files\MiKTeX 2.9\tex/latex/colortbl\colortbl.sty"
 Package: colortbl 2018/12/12 v1.0d Color table columns (DPC)
-\everycr=\toks32
+\everycr=\toks33
 \minrowclearance=\skip60
 ) ("C:\Program Files\MiKTeX 2.9\tex/latex/oberdiek\pdflscape.sty"
 Package: pdflscape 2016/05/14 v0.11 Display of landscape pages in PDF (HO)
@@ -598,27 +613,27 @@ Package: tabu 2019/01/11 v2.9 - flexible LaTeX tabulars (FC+tabu-fixed)
 ("C:\Program Files\MiKTeX 2.9\tex/latex/varwidth\varwidth.sty"
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \@vwid@box=\box43
-\sift@deathcycles=\count138
-\@vwid@loff=\dimen147
-\@vwid@roff=\dimen148
+\sift@deathcycles=\count141
+\@vwid@loff=\dimen155
+\@vwid@roff=\dimen156
 )
-\c@taburow=\count139
-\tabu@nbcols=\count140
-\tabu@cnt=\count141
-\tabu@Xcol=\count142
-\tabu@alloc=\count143
-\tabu@nested=\count144
-\tabu@target=\dimen149
-\tabu@spreadtarget=\dimen150
-\tabu@naturalX=\dimen151
-\tabucolX=\dimen152
-\tabu@Xsum=\dimen153
-\extrarowdepth=\dimen154
-\abovetabulinesep=\dimen155
-\belowtabulinesep=\dimen156
-\tabustrutrule=\dimen157
-\tabu@thebody=\toks33
-\tabu@footnotes=\toks34
+\c@taburow=\count142
+\tabu@nbcols=\count143
+\tabu@cnt=\count144
+\tabu@Xcol=\count145
+\tabu@alloc=\count146
+\tabu@nested=\count147
+\tabu@target=\dimen157
+\tabu@spreadtarget=\dimen158
+\tabu@naturalX=\dimen159
+\tabucolX=\dimen160
+\tabu@Xsum=\dimen161
+\extrarowdepth=\dimen162
+\abovetabulinesep=\dimen163
+\belowtabulinesep=\dimen164
+\tabustrutrule=\dimen165
+\tabu@thebody=\toks34
+\tabu@footnotes=\toks35
 \tabu@box=\box44
 \tabu@arstrutbox=\box45
 \tabu@hleads=\box46
@@ -639,18 +654,18 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 \UL@box=\box49
 \UL@hyphenbox=\box50
 \UL@skip=\skip63
-\UL@hook=\toks35
-\UL@height=\dimen158
-\UL@pe=\count145
-\UL@pixel=\dimen159
+\UL@hook=\toks36
+\UL@height=\dimen166
+\UL@pe=\count148
+\UL@pixel=\dimen167
 \ULC@box=\box51
 Package: ulem 2012/05/18
-\ULdepth=\dimen160
+\ULdepth=\dimen168
 ) ("C:\Program Files\MiKTeX 2.9\tex/latex/makecell\makecell.sty"
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
-\rotheadsize=\dimen161
-\c@nlinenum=\count146
-\TeXr@lab=\toks36
+\rotheadsize=\dimen169
+\c@nlinenum=\count149
+\TeXr@lab=\toks37
 ) (Accessibility-Vaccination-Sites-Hamilton.aux
 
 LaTeX Warning: Label `fig:population-map' multiply defined.
@@ -687,17 +702,17 @@ LaTeX Font Info:    Trying to load font information for T1+lmr on input line 78
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) ("C:\Program Files\MiKTeX 2.9\tex/context/base/mkii\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count147
-\scratchdimen=\dimen162
+\scratchcounter=\count150
+\scratchdimen=\dimen170
 \scratchbox=\box52
-\nofMPsegments=\count148
-\nofMParguments=\count149
-\everyMPshowfont=\toks37
-\MPscratchCnt=\count150
-\MPscratchDim=\dimen163
-\MPnumerator=\count151
-\makeMPintoPDFobject=\count152
-\everyMPtoPDFconversion=\toks38
+\nofMPsegments=\count151
+\nofMParguments=\count152
+\everyMPshowfont=\toks38
+\MPscratchCnt=\count153
+\MPscratchDim=\dimen171
+\MPnumerator=\count154
+\makeMPintoPDFobject=\count155
+\everyMPtoPDFconversion=\toks39
 ) ("C:\Program Files\MiKTeX 2.9\tex/latex/oberdiek\epstopdf-base.sty"
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 ("C:\Program Files\MiKTeX 2.9\tex/latex/oberdiek\grfext.sty"
@@ -732,7 +747,7 @@ Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
 ("C:\Program Files\MiKTeX 2.9\tex/generic/oberdiek\gettitlestring.sty"
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count153
+\c@section@level=\count156
 )
 LaTeX Info: Redefining \ref on input line 78.
 LaTeX Info: Redefining \pageref on input line 78.
@@ -741,6 +756,40 @@ LaTeX Info: Redefining \nameref on input line 78.
 -Hamilton.out)
 \@outlinefile=\write4
 \openout4 = `Accessibility-Vaccination-Sites-Hamilton.out'.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(90.3375pt, 433.62001pt, 90.3375pt)
+* v-part:(T,H,B)=(90.3375pt, 614.295pt, 90.3375pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=433.62001pt
+* \textheight=614.295pt
+* \oddsidemargin=18.0675pt
+* \evensidemargin=18.0675pt
+* \topmargin=-18.9325pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=24.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
 06.
@@ -795,125 +844,156 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10> on input line 106.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 106.
-[1
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
+50.
+("C:\Program Files\MiKTeX 2.9\tex/latex/lm\ts1lmr.fd"
+File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+) [1
 
 
 {C:/Users/paezha/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-48.
-("C:\Program Files\MiKTeX 2.9\tex/latex/lm\ts1lmr.fd"
-File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
 <Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/pharmacies-map-1.p
-df, id=51, 469.755pt x 361.35pt>
+df, id=79, 469.755pt x 289.08pt>
 File: Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/pharmacies-ma
 p-1.pdf Graphic file (type pdf)
 <use Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/pharmacies-map
 -1.pdf>
 Package pdftex.def Info: Accessibility-Vaccination-Sites-Hamilton_files/figure-
-latex/pharmacies-map-1.pdf  used on input line 164.
-(pdftex.def)             Requested size: 469.75386pt x 361.34912pt.
+latex/pharmacies-map-1.pdf  used on input line 166.
+(pdftex.def)             Requested size: 469.75386pt x 289.07928pt.
 
-Overfull \hbox (124.75386pt too wide) in paragraph at lines 164--165
+Overfull \hbox (36.13385pt too wide) in paragraph at lines 166--167
  [][] 
  []
 
-[2]
 <Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/population-map-1.p
-df, id=60, 469.755pt x 505.89pt>
+df, id=80, 469.755pt x 578.16pt>
 File: Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/population-ma
 p-1.pdf Graphic file (type pdf)
 <use Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/population-map
 -1.pdf>
 Package pdftex.def Info: Accessibility-Vaccination-Sites-Hamilton_files/figure-
-latex/population-map-1.pdf  used on input line 173.
-(pdftex.def)             Requested size: 469.75386pt x 505.88875pt.
+latex/population-map-1.pdf  used on input line 175.
+(pdftex.def)             Requested size: 469.75386pt x 578.15858pt.
 
-Overfull \hbox (124.75386pt too wide) in paragraph at lines 173--174
+Overfull \hbox (36.13385pt too wide) in paragraph at lines 175--176
  [][] 
  []
 
-[3pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
+[2pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.179 
+l.181 
        <./Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/pharmacie
-s-map-1.pdf>] [4pdfTeX warning (ext4): destination with the same identifier (na
+s-map-1.pdf>] [3pdfTeX warning (ext4): destination with the same identifier (na
 me{figure.2}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.188 
-       <./Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/populatio
-n-map-1.pdf>]
+l.191 ...tion{Open Hamilton}\label{open-hamilton}}
+                                                   <./Accessibility-Vaccination
+-Sites-Hamilton_files/figure-latex/population-map-1.pdf>]
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 191.
+
+[4] [5]
+<Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/figure-maps-baseli
+ne-1.pdf, id=149, 469.755pt x 505.89pt>
+File: Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/figure-maps-b
+aseline-1.pdf Graphic file (type pdf)
+<use Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/figure-maps-ba
+seline-1.pdf>
+Package pdftex.def Info: Accessibility-Vaccination-Sites-Hamilton_files/figure-
+latex/figure-maps-baseline-1.pdf  used on input line 335.
+(pdftex.def)             Requested size: 469.75386pt x 505.88875pt.
+
+Overfull \hbox (36.13385pt too wide) in paragraph at lines 335--336
+ [][] 
+ []
+
+[6pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) 
+has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.369 \end{table}
+                  <./Accessibility-Vaccination-Sites-Hamilton_files/figure-late
+x/figure-maps-baseline-1.pdf>]
 <Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/figure-results-1.p
-df, id=85, 469.755pt x 289.08pt>
+df, id=164, 469.755pt x 289.08pt>
 File: Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/figure-result
 s-1.pdf Graphic file (type pdf)
 <use Accessibility-Vaccination-Sites-Hamilton_files/figure-latex/figure-results
 -1.pdf>
 Package pdftex.def Info: Accessibility-Vaccination-Sites-Hamilton_files/figure-
-latex/figure-results-1.pdf  used on input line 196.
+latex/figure-results-1.pdf  used on input line 373.
 (pdftex.def)             Requested size: 469.75386pt x 289.07928pt.
 
-Overfull \hbox (124.75386pt too wide) in paragraph at lines 196--197
+Overfull \hbox (36.13385pt too wide) in paragraph at lines 373--374
  [][] 
  []
 
-[5pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) 
-has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.247 \leavevmode
-                 \hypertarget{ref-Pereira2021geographic}{}% <./Accessibility-Va
-ccination-Sites-Hamilton_files/figure-latex/figure-results-1.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 261.
-[6pdfTeX warning (ext4): destination with the same identifier (name{table.1}) h
+[7pdfTeX warning (ext4): destination with the same identifier (name{table.1}) h
 as been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.261 \end{document}
-                    ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 261.
+l.391 \leavevmode
+                 \hypertarget{ref-Lovelace2021open}{}%pdfTeX warning (ext4): de
+stination with the same identifier (name{figure.4}) has been already used, dupl
+icate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.391 \leavevmode
+                 \hypertarget{ref-Lovelace2021open}{}% <./Accessibility-Vaccina
+tion-Sites-Hamilton_files/figure-latex/figure-results-1.pdf>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 420.
+[8]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 420.
 (Accessibility-Vaccination-Sites-Hamilton.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 261.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 261.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 420.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 420.
 Package rerunfilecheck Info: File `Accessibility-Vaccination-Sites-Hamilton.out
 ' has not changed.
-(rerunfilecheck)             Checksum: 96EBE1922905CAEB3E039B211BC80D6F;526.
+(rerunfilecheck)             Checksum: 852CB1E213E509A2D54D1BE44BB34C28;1224.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 261.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 420.
  ) 
 Here is how much of TeX's memory you used:
- 14574 strings out of 492453
- 208680 string characters out of 3129816
- 329798 words of memory out of 3000000
- 18591 multiletter control sequences out of 15000+200000
- 59971 words of font info for 89 fonts, out of 3000000 for 9000
+ 15082 strings out of 492453
+ 216480 string characters out of 3129816
+ 342139 words of memory out of 3000000
+ 19057 multiletter control sequences out of 15000+200000
+ 60823 words of font info for 97 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,11n,42p,336b,348s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/M
-iKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/
-dvips/lm/lm-mathsy.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx1
-0.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Program 
-Files/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files/MiKTeX 2.9/f
-onts/type1/public/lm/lmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/l
-m/lmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr8.pfb><C:/Prog
-ram Files/MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb><C:/Program Files/MiKTeX 
-2.9/fonts/type1/public/lm/lmri7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pu
-blic/lm/lmri8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy6.pfb>
-<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy7.pfb><C:/Program Files/
-MiKTeX 2.9/fonts/type1/public/lm/lmtt8.pfb>
-Output written on Accessibility-Vaccination-Sites-Hamilton.pdf (6 pages, 117296
-6 bytes).
+ 39i,11n,42p,338b,395s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Program Fil
+es/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}{C:/Program Files/MiKTeX 2.9/fonts/e
+nc/dvips/lm/lm-mathit.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec
+.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.enc}<C:/Program Fil
+es/MiKTeX 2.9/fonts/type1/public/lm/lmbx10.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/lm/lmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/l
+m/lmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/lm/lmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pu
+blic/lm/lmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr8.pfb><C
+:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb><C:/Program Files/M
+iKTeX 2.9/fonts/type1/public/lm/lmri7.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
+pe1/public/lm/lmri8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy
+10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy6.pfb><C:/Program
+ Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy7.pfb><C:/Program Files/MiKTeX 2.9/
+fonts/type1/public/lm/lmtt10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
+c/lm/lmtt8.pfb>
+Output written on Accessibility-Vaccination-Sites-Hamilton.pdf (8 pages, 151867
+7 bytes).
 PDF statistics:
- 163 PDF objects out of 1000 (max. 8388607)
- 31 named destinations out of 1000 (max. 500000)
- 17456 words of extra memory for PDF output out of 20736 (max. 10000000)
+ 263 PDF objects out of 1000 (max. 8388607)
+ 51 named destinations out of 1000 (max. 500000)
+ 18021 words of extra memory for PDF output out of 20736 (max. 10000000)
 

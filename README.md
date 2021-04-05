@@ -37,29 +37,29 @@ substantially alleviate this inequity.
 ## Research Questions and Hypotheses
 
 Along with the provision of health care facilities to treat severe cases
-of COVID-19 (Pereira et al. 2021), another front in the fight against
-the pandemic is the rolling out of vaccination programs. The Province of
-Ontario, in Canada, announced on April 1st 2021 the expansion of a pilot
-program to offer vaccines in pharmacies in the City of Hamilton. This
-program is in addition to dedicated vaccination centers for people aged
-70+. Twenty pharmacies in Hamilton were added to an earlier list of 325
-locations in other cities across the province, and the program was
-extended to people aged 55 years old and over.
+of COVID-19 (Pereira, Braga, et al. 2021), another front in the fight
+against the pandemic is the rolling out of vaccination programs. The
+Province of Ontario, in Canada, announced on April 1st 2021 the
+expansion of a pilot program to offer vaccines in pharmacies in the City
+of Hamilton. This program is in addition to dedicated vaccination
+centers for people aged 70+. Twenty pharmacies in Hamilton were added to
+an earlier list of 325 locations in other cities across the province,
+and the program was extended to people aged 55 years old and over.
 
-Critics were quick to point out that the list of pharmacies approved for
-Hamilton were mostly located in lower density parts of the city that are
-not well serviced by transit and are difficult to reach by foot. Indeed,
-as seen in Figure , a vast majority of the pharmacies are in suburban
-Hamilton. The issue is somewhat less clear cut when we consider that
-Hamilton’s suburbs tend to be older (see Figure ). The population aged
-55 to 69 in Hamilton is approximately 59,095 suburban, 35,704 urban, and
-only 35,704 rural. Given the target demographic for the program, it is
-possible that suburban sites could be convenient for mature and older
-adults. Nevertheless, the selection of sites by the province raises some
-important questions. As Yu et al. (2021) note, good geographical
-coverage is a key element for a successful vaccination campaign; at the
-same time, siting vaccinations sites in car-oriented locations may
-introduce inequities in access.
+Critics were swift to point out that the list of pharmacies approved for
+Hamilton by the province were mostly located in lower density parts of
+the city that are not well serviced by transit and are difficult to
+reach by foot. Indeed, as seen in Figure , a vast majority of the
+pharmacies are in suburban Hamilton. The issue is somewhat less
+clear-cut when we consider that Hamilton’s population skews suburban
+(see Figure ). Given the target demographic for the program, it is
+possible that suburban sites could be convenient for mature adults and
+young old: the population aged 55 to 69 in Hamilton is approximately
+58,710 suburban, 35,490 urban, and only 8,360 rural. Nevertheless, the
+selection of sites by the province raises some important questions. As
+Yu et al. (2021) note, good geographical coverage is a key element for a
+successful vaccination campaign; at the same time, siting vaccinations
+sites in car-oriented locations may introduce inequities in access.
 
 In this research, we investigate the accessibility implications of the
 sites selected for the pilot vaccination program. Concretely, we ask:
@@ -77,11 +77,13 @@ in the provincial pilot.
 
 <div class="figure" style="text-align: center">
 
-<img src="README_files/figure-gfm/pharmacies-map-1.png" alt="\label{fig:pharmacies-and-regions}Location of pharmacies in pilot and regions with the City of Hamilton"  />
+<img src="README_files/figure-gfm/pharmacies-map-1.png" alt="\label{fig:pharmacies-and-regions}Regions with the City of Hamilton; the location of pharmacies in pilot is shown (black triangles) and urban locations for scenario analysis (white circles)"  />
 
 <p class="caption">
 
-Location of pharmacies in pilot and regions with the City of Hamilton
+Regions with the City of Hamilton; the location of pharmacies in pilot
+is shown (black triangles) and urban locations for scenario analysis
+(white circles)
 
 </p>
 
@@ -101,23 +103,163 @@ Distribution of population age 55+ in the City of Hamilton
 
 ## Methods and Data
 
-This paper is a reproducible research document (see Brunsdon and Comber
-2020) conducted using open source tools for transportation analysis
-(Lovelace 2021). All code and data necessary to reproduce the tables and
-figures are available in a public repository.
+## Data
+
+We use data from the following sources.
+
+### Open Hamilton
+
+From the open data portal of the City of Hamilton we obtained boundaries
+for the city’s various regions (the definition of urban, suburban, and
+rural regions follows the classification of development applications).
+
+### Statistics Canada
+
+Population and income statistics at the level of Dissemination Areas
+(DAs) were retrieved using the package `cancensus` (von Bergmann,
+Shkolnik, and Jacobs 2021). Dissemination Areas are the smallest
+publicly available census geography in Canada. We use data from the 2016
+Population Census.
+
+### Transportation Tomorrow Survey
+
+Data about modal split by age by place of residence were downloaded from
+the Data Retrieval System of the Transportation Tomorrow Survey (TTS).
+The data are geocoded at the level of Traffic Analysis Zones (TAZ).
+
+### Other
+
+The locations of pharmacies in the pilot were obtained from public
+records and geocoded. Three urban sites not in the program were also
+identified and geocoded for comparison purposes. In addition, we
+converted all recorded residential parcels in the City of Hamilton to
+points on the road network. Each point includes information about the
+number of residential units in the parcel.
+
+## Methods
+
+We used the population aged 55 to 59 y.o. in each Dissemination Area to
+calculate the average number of people per dwelling. This value was then
+assigned proportionally to the number of dwellings per parcel. The
+median total household income of the corresponding DAs was joined to the
+parcels. In addition, we calculated the proportion of trips by mode from
+the total number of trips by each of the three modes retrieved from the
+TTS data. These proportions were joined to the parcel data based on
+their corresponding TAZ. The package `r5r` (Pereira, Saraiva, et al.
+2021) was used to calculate the travel time from each parcel to all
+pharmacies by three modes: car, transit, and walking. For routing
+purposes we used a cutoff value of 180 min and a maximum walking
+distance of 10,000 m.
+
+Once we obtained travel time tables with population, proportion of trips
+by mode, and income information, we calculated the expected travel time
+![ett](https://latex.codecogs.com/png.latex?ett "ett") from each parcel
+![i](https://latex.codecogs.com/png.latex?i "i") to a pharmacy
+![j](https://latex.codecogs.com/png.latex?j "j") as follows:   
+![&#10;ett\_i = p^c\_i \\min(tt^c\_{ij}) + p^t\_i \\min(tt^t\_{ij}) +
+p^w\_i
+\\min(tt^w\_{ij})&#10;](https://latex.codecogs.com/png.latex?%0Aett_i%20%3D%20p%5Ec_i%20%5Cmin%28tt%5Ec_%7Bij%7D%29%20%2B%20p%5Et_i%20%5Cmin%28tt%5Et_%7Bij%7D%29%20%2B%20p%5Ew_i%20%5Cmin%28tt%5Ew_%7Bij%7D%29%0A
+"
+ett_i = p^c_i \\min(tt^c_{ij}) + p^t_i \\min(tt^t_{ij}) + p^w_i \\min(tt^w_{ij})
+")  
+where ![p^k\_i](https://latex.codecogs.com/png.latex?p%5Ek_i "p^k_i") is
+the proportion of trips by mode
+![k](https://latex.codecogs.com/png.latex?k "k") in the TAZ of parcel
+![i](https://latex.codecogs.com/png.latex?i "i"), and
+![tt^k\_{ij}](https://latex.codecogs.com/png.latex?tt%5Ek_%7Bij%7D
+"tt^k_{ij}") is the vector of travel times from parcel
+![i](https://latex.codecogs.com/png.latex?i "i") to the pharmacies. In
+other words, the expected travel time is the weighted sum of travel
+times to the nearest pharmacy, with the weights given by the expected
+modal split in the TAZ.
+
+The expected travel time ![i](https://latex.codecogs.com/png.latex?i
+"i") was multiplied by the population in parcel
+![i](https://latex.codecogs.com/png.latex?i "i") to obtain a measure of
+person-hours of travel (![PHT](https://latex.codecogs.com/png.latex?PHT
+"PHT")) as follows:   
+![&#10;PHT\_i = P\_i\\cdot
+ett\_i&#10;](https://latex.codecogs.com/png.latex?%0APHT_i%20%3D%20P_i%5Ccdot%20ett_i%0A
+"
+PHT_i = P_i\\cdot ett_i
+")  
+
+Please note that this paper is a reproducible research document (see
+Brunsdon and Comber 2020) conducted using open source tools for
+transportation analysis (Lovelace 2021). The code and data necessary to
+reproduce the analysis are available in a public repository.
 
 ## Findings
 
-Words.
+The top panel of Figure  shows the average expected travel time by TAZ
+in Hamilton. It is apparent that travel times tend to be lower in much
+of suburban Hamilton, and higher in the urban core and some rural parts
+of the city, particularly to the west. This is unsurprising, given the
+higher probability of travel by car and the predominantly suburban
+character of the vaccination sites. However, even accounting for the
+distribution of population, this leads to large disparities in the
+number of person-hours of travel across the city, with a concentration
+of the burden of travel in the urban core and the rural west (see bottom
+panel of Figure ).
+
+The disparities are not trivial.
+
+As seen in Table , under the pilot program approximately 36.42% of
+people live in DAs in the bottom 40% of the median household income
+scale, but they account for 51.98% of the total person-hours of travel.
+In contrast, 44.5% of people aged 55 to 69 in DAs in the top 40% of the
+median household income scale accrue only 35.03% of the total
+person-hours of travel. Where the mean travel time of residents of DAs
+with high median household income is 6 minutes, residents of lower
+income DAs average 12 minutes in travel time. In addition to longer
+average travel time, residents in lower income DAs also see
+substantially larger variations in travel times, and some may face
+considerably longer travel times (see top-left panel in Figure ).
+
+There are also important disparities by region. As shown in Table , the
+urban and rural populations in Hamilton are approximately 42.75% of the
+population but they bear 69.25% of the total person-hours of travel,
+with also much greater variability in expected travel times (Figure ,
+bottom-left panel).
+
+For comparison purposes we consider a scenario with some modest
+additions to the list of pharmacies in the provincial pilot. We repeat
+the analysis, but include the three urban sites shown in white circles
+in Figure . The results of this scenario appear in the last two columns
+of Table  and the two right panels of Figure . We begin by noting that
+all income groups benefit from the addition of these three sites with
+shorter mean trip durations; the most remarkable difference is the large
+reduction in the disparities between residents in DAs with different
+levels of income. The top-right panel of Figure  shows that the
+distribution of expected travel time is now more in line for all income
+groups, even if the bottom two income quintiles still have somewhat
+wider spreads. With respect to the distribution of expected travel time
+and person-hours of travel by region, unsurprisingly the addition of
+three urban vaccination sites in the scenario makes a difference for
+urban residents but not for rural residents.
+
+The results indicate that the locations chosen by the province for the
+pilot vaccination program do not serve well urban or rural residents of
+the city, and there are some important questions regarding equity of
+access to the program, with a disproportionate burden in the cost of
+travel falling on lower income urban populations and rural populations.
+A scenario did not consider candidate sites in a systematic way.
+Nonetheless, selection of three sensible urban locations does much to
+alleviate disparities in the burden of transportation. On the other
+hand, unlike the urban context where there are numerous candidate
+locations that could be chosen for a vaccination program, there are not
+many candidate locations in rural regions of the city. Increasing access
+in rural Hamilton likely will involve an expansion of existing mobile
+vaccination pop-up clinics.
 
 <div class="figure" style="text-align: center">
 
-<img src="README_files/figure-gfm/figure-results-1.png" alt="\label{fig:results}Distribution of travel time (weighted by mode) for different population groups"  />
+<img src="README_files/figure-gfm/figure-maps-baseline-1.png" alt="\label{fig:maps-baseline}Average expected travel time by TAZ (in minutes) and total person-hours of travel by TAZ."  />
 
 <p class="caption">
 
-Distribution of travel time (weighted by mode) for different population
-groups
+Average expected travel time by TAZ (in minutes) and total person-hours
+of travel by TAZ.
 
 </p>
 
@@ -127,7 +269,7 @@ groups
 
 <caption>
 
-Distribution of person hours travelled (PHT) by median total household
+Distribution of person-hours of travel (PHT) by median total household
 income and region: pilot locations only, and scenario with three urban
 locations added
 
@@ -576,7 +718,19 @@ classification of the regions
 
 </table>
 
-# References
+<div class="figure" style="text-align: center">
+
+<img src="README_files/figure-gfm/figure-results-1.png" alt="\label{fig:results}Distribution of expected travel time for different population groups"  />
+
+<p class="caption">
+
+Distribution of expected travel time for different population groups
+
+</p>
+
+</div>
+
+## References
 
 <div id="refs" class="references">
 
@@ -585,6 +739,7 @@ classification of the regions
 Brunsdon, Chris, and Alexis Comber. 2020. “Opening Practice: Supporting
 Reproducibility and Critical Spatial Data Science.” *Journal of
 Geographical Systems*, 1–20.
+<https://doi.org/10.1007/s10109-020-00334-2>.
 
 </div>
 
@@ -598,12 +753,28 @@ Transport Planning.” Journal Article. *Journal of Geographical Systems*.
 
 <div id="ref-Pereira2021geographic">
 
-Pereira, Rafael H. M., Carlos Kauê Vieira Braga, Luciana Mendes Servo,
-Bernardo Serra, Pedro Amaral, Nelson Gouveia, and Antonio Paez. 2021.
-“Geographic Access to Covid-19 Healthcare in Brazil Using a Balanced
-Float Catchment Area Approach.” Journal Article. *Social Science &
-Medicine* 273: 113773.
+Pereira, Rafael H. M., Carlos K. V. S. Braga, L. Mendes and Serra, P. B.
+Amaral, N. Gouveia, and A. Paez. 2021. “Geographic Access to Covid-19
+Healthcare in Brazil Using a Balanced Float Catchment Area Approach.”
+Journal Article. *Social Science & Medicine* 273: 113773.
 <https://doi.org/https://doi.org/10.1016/j.socscimed.2021.113773>.
+
+</div>
+
+<div id="ref-Pereira2021r5r">
+
+Pereira, Rafael H. M., Marcus Saraiva, Daniel Herszenhut, Carlos Kaue
+Vieira Braga, and Matthew Wigginton Conway. 2021. “R5r: Rapid Realistic
+Routing on Multimodal Transport Networks with R<sup>5</sup> in R.”
+*Findings*, March. <https://doi.org/10.32866/001c.21262>.
+
+</div>
+
+<div id="ref-vonBergmann2021cancensus">
+
+von Bergmann, Jens, Dmitry Shkolnik, and Aaron Jacobs. 2021. *Cancensus:
+R Package to Access, Retrieve, and Work with Canadian Census Data and
+Geography*. <https://mountainmath.github.io/cancensus/>.
 
 </div>
 
