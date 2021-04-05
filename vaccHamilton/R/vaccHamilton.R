@@ -208,3 +208,21 @@ NULL
 #' @name ttm_walk
 #' @usage data(ttm_walk)
 "ttm_walk"
+
+#' Urban types
+#'
+#' Classification of regions by type: urban, suburban, and rural. This is based on the rural boundaries of the city, and the planning regions.
+#'
+#'#' @format A simple features data frame with 2 rows and 2 variables:
+#' \describe{
+#'   \item{Type}{Classification of the region: "Urban", "Suburban", "Rural"}
+#'   \item{geometry}{Geometry of polygons}
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @keywords transportation
+#' @name urban_types
+#' @usage data(urban_types)
+"urban_types"
+

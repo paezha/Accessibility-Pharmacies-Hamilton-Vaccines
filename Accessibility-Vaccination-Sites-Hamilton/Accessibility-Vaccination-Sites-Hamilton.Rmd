@@ -1,5 +1,5 @@
 ---
-title: "An examination of accessibility to pilot COVID-19 vaccination sites in Hamilton, Ontario"
+title: "An examination of the accessibility implications of a pilot COVID-19 vaccination program in Hamilton, Ontario"
 author:
   - name: Antonio Paez
     email: paezha@mcmaster.ca
@@ -17,8 +17,8 @@ footnote:
   - code: 1
     text: "Corresponding Author"
 abstract: |
-  Abstract
-
+  The province of Ontario in Canada announced the pilot for a new vaccination program, with designated pharmacies across the province now able to offer COVID-19 vaccines. The accessibility of this program raises questions about the cost of travel and the distribution of the cost among the population. In our examination of the City of Hamilton we find that selected sites do not serve well the rural and urban population of Hamilton, and that the associated cost of travel is expected to be disproportionally borne by lower income populations. Modest additions to the list of pilot sites in the city can substantially alleviate this inequity.
+  
 journal: "Transport Findings"
 date: "`r Sys.Date()`"
 bibliography: References.bib
@@ -35,46 +35,804 @@ header-includes:
 ---
 
 ```{r install-data-package, include = FALSE}
-# Run only once if needed to install data package `sobiEquity`
+# Run only once if needed to install data package `vaccHamilton`
 if (!require("vaccHamilton", character.only = TRUE)) {
-      devtools::install_github("https://github.com/paezha/Accessibility-Pharmacies-Hamilton-Vaccines", subdir = "vaccHamilton")
+      devtools::install_github("https://github.com/paezha/Accessibility-Pharmacies-Hamilton-Vaccines", 
+                               subdir = "vaccHamilton")
   }
 ```
 
 ```{r load-packages, include=FALSE}
 #Load the packages needed to read and work with the data
-#library(circlize)
 library(grid)
 library(gridExtra)
 library(kableExtra)
 library(png)
-#library(readr)
 library(sf)
 library(tidyverse)
 library(vaccHamilton)
 ```
 
+```{r invoke-data, include=FALSE}
+data("data_da_2016")
+data("dwelling_network_points_2016")
+data("hamilton_cma")
+data("modes_55to69")
+data("pharmacy_locations")
+data("ttm_car")
+data("ttm_transit")
+data("ttm_walk")
+data("urban_types")
+```
+
+```{r population-age-55-plus, include=FALSE}
+# Data preparation
+## Calculate number of people age 55+ per DA:
+data_da_2016 <- data_da_2016 %>%
+  filter(`Region Name` == "Hamilton") %>%
+  mutate(Population_55to69 = (`v_CA16_208: 55 to 59 years` + 
+                  `v_CA16_226: 60 to 64 years` + 
+                  `v_CA16_247: 65 to 69 years`),
+         Population_70plus = (`v_CA16_265: 70 to 74 years` +
+                  `v_CA16_283: 75 to 79 years` +
+                  `v_CA16_301: 80 to 84 years` + 
+                  `v_CA16_319: 85 years and over`))
+```
+
+```{r select-pharmacies, include=FALSE}
+# Data preparation
+## Select pharmacy locations:
+pharmacy_locations <- pharmacy_locations %>%
+  slice(1:23)
+
+## Also filter selected pharmacies from travel time tables:
+ttm_car <- ttm_car %>%
+  dplyr::filter(OBJECTID <= 23)
+
+ttm_transit <- ttm_transit %>%
+  dplyr::filter(OBJECTID <= 23)
+
+ttm_walk <- ttm_walk %>%
+  dplyr::filter(OBJECTID <= 23)
+```
+
+```{r clip-da-geometry, include=FALSE}
+# Data preparation
+## This is purely cosmetic: clip `data_da_2016`:
+data_da_2016 <- data_da_2016 %>%
+  st_intersection(hamilton_cma)
+```
+
+```{r number-of-residential-units-per-DA, include=FALSE}
+# Data preparation
+## Find number of residential units in each DA. This is needed to assign the population to parcels
+residential_units <- dwelling_network_points_2016 %>%
+  st_drop_geometry() %>%
+  group_by(DAUID) %>%
+  summarize(residential_units = sum(Dwellings))
+```
+
+```{r join-population-to-parcels, include=FALSE}
+# Data preparation
+## Join number of people age 55+ per DA to dwellings and total number of residential units:
+dwelling_network_points_2016 <- dwelling_network_points_2016 %>%
+  left_join(data_da_2016 %>%
+              st_drop_geometry() %>%
+              dplyr::transmute(DAUID = GeoUID, 
+                               Population_55to69,
+                               Population_70plus),
+            by = "DAUID") %>%
+  left_join(residential_units,
+            by = "DAUID")
+```
+
+```{r calculate-population-per-parcel, include=FALSE}
+# Data preparation
+##Calculate population per point on the network. This is the population in the DA divided by the total number of residential units. This gives the average number of people per residential unit. Then, multiply by the number of dwellings (residential units) at the point:
+dwelling_network_points_2016 <- dwelling_network_points_2016 %>%
+  mutate(Population_55to69 = (Population_55to69/residential_units) * Dwellings,
+         Population_70plus = (Population_70plus/residential_units) * Dwellings)
+```
+
+```{r join-region-to-parcels, include=FALSE}
+dwelling_network_points_2016 <- dwelling_network_points_2016 %>%
+  st_join(urban_types)
+```
+
+```{r calculate-population-statistics, include=FALSE}
+population_statistics <- dwelling_network_points_2016 %>% 
+  st_drop_geometry() %>% 
+  dplyr::filter(!is.na(Type)) %>% 
+  group_by(Type) %>% 
+  summarize(Population_55to69 = sum(Population_55to69, 
+                                    na.rm = TRUE), 
+            Population_70plus = sum(Population_70plus, 
+                                    na.rm = TRUE))
+```
+
+```{r join-population-data-to-travel-time-tables, include=FALSE}
+# Data preparation
+## Join the population data to the travel time matrices:
+ttm_car <- ttm_car %>%
+  left_join(dwelling_network_points_2016 %>%
+              st_drop_geometry() %>%
+              dplyr::transmute(ID, 
+                            Population_55to69,
+                            Population_70plus,
+                            Urban_type = Type,
+                            DAUID, 
+                            TAZUID),
+            by = c("UID" = "ID"))
+
+ttm_transit <- ttm_transit %>%
+  left_join(dwelling_network_points_2016 %>%
+              st_drop_geometry() %>%
+              dplyr::transmute(ID, 
+                            Population_55to69,
+                            Population_70plus,
+                            Urban_type = Type,
+                            DAUID, 
+                            TAZUID),
+            by = c("UID" = "ID"))
+
+ttm_walk <- ttm_walk %>%
+  left_join(dwelling_network_points_2016 %>%
+              st_drop_geometry() %>%
+              dplyr::transmute(ID, 
+                            Population_55to69,
+                            Population_70plus,
+                            Urban_type = Type,
+                            DAUID, 
+                            TAZUID),
+            by = c("UID" = "ID"))
+```
+
+```{r join-pharmacy-data-to-travel-time-tables, include=FALSE}
+# Data preparation
+## Join the pharmacy data to the travel time matrices:
+ttm_car <- ttm_car %>%
+  left_join(pharmacy_locations %>%
+              st_drop_geometry() %>%
+              dplyr::select(ID, 
+                            Type),
+            by = c("OBJECTID" = "ID"))
+
+ttm_transit <- ttm_transit %>%
+  left_join(pharmacy_locations %>%
+              st_drop_geometry() %>%
+              dplyr::select(ID, 
+                            Type),
+            by = c("OBJECTID" = "ID"))
+
+ttm_walk <- ttm_walk %>%
+  left_join(pharmacy_locations %>%
+              st_drop_geometry() %>%
+              dplyr::select(ID, 
+                            Type),
+            by = c("OBJECTID" = "ID"))
+```
+
+```{r drop-missing-values, include=FALSE}
+# Data preparation
+## Drop parcels with missing values:
+ttm_car <- ttm_car %>%
+  drop_na(TAZUID,
+          Population_55to69)
+
+ttm_transit <- ttm_transit %>%
+  drop_na(TAZUID,
+          Population_55to69)
+
+ttm_walk <- ttm_walk %>%
+  drop_na(TAZUID,
+          Population_55to69)
+```
+
+```{r proportion-of-trips-by-mode, include=FALSE}
+# Data preparation
+## Calculate proportion of trips by mode per TAZ:
+modes <- modes_55to69 %>%
+  mutate(p_car = Driver/(Driver + Transit + Walk),
+         p_transit = Transit/(Driver + Transit + Walk),
+         p_walk = Walk/(Driver + Transit + Walk))
+```
+
+```{r complete-proportion-of-trips-by-mode, include=FALSE}
+# Data preparation
+## Assume that TAZ with NAs have a proportion of car trips of one:
+modes <- modes %>%
+  dplyr::mutate(p_car = replace_na(p_car, 1),
+                p_transit = replace_na(p_transit, 0),
+                p_walk = replace_na(p_walk, 0))
+```
+
+```{r join-proportion-of-trips-to-travel-time-tables, include=FALSE}
+# Data preparation
+## Join proportion of trips by mode to travel time tables:
+ttm_car <- ttm_car %>%
+  left_join(modes %>%
+              st_drop_geometry() %>%
+              transmute(TAZUID,
+                        p_car,
+                        p_transit,
+                        p_walk),
+            by = "TAZUID")
+
+ttm_transit <- ttm_transit %>%
+  left_join(modes %>%
+              st_drop_geometry() %>%
+              transmute(TAZUID,
+                        p_car,
+                        p_transit,
+                        p_walk),
+            by = "TAZUID")
+
+ttm_walk <- ttm_walk %>%
+  left_join(modes %>%
+              st_drop_geometry() %>%
+              transmute(TAZUID,
+                        p_car,
+                        p_transit,
+                        p_walk),
+            by = "TAZUID")
+```
+
+```{r income-quintiles, include=FALSE}
+# Data preparation
+## Calculate quintiles of median household income in Hamilton:
+mhi_q <- data_da_2016 %>%
+  dplyr::filter(`Region Name` == "Hamilton") %>%
+  pull(`v_CA16_2397: Median total income of households in 2015 ($)`) %>%
+  quantile(c(0, 0.2, 0.4, 0.6, 0.8, 1), 
+           na.rm = TRUE)
+```
+
+```{r label-income-quintiles, include=FALSE}
+# Data preparation
+## Label the DAs according to income quintiles
+data_da_2016 <- data_da_2016 %>%
+  rename(Median_household_income = `v_CA16_2397: Median total income of households in 2015 ($)`) %>%
+  mutate(income_quintile = case_when(Median_household_income < mhi_q[2] ~ "Bottom 20%",
+                                     Median_household_income >= mhi_q[2] & Median_household_income < mhi_q[3] ~ "Fourth 20%",
+                                     Median_household_income >= mhi_q[3] & Median_household_income < mhi_q[4] ~ "Third 20%",
+                                     Median_household_income >= mhi_q[4] & Median_household_income < mhi_q[5] ~ "Second 20%",
+                                     Median_household_income >= mhi_q[5] ~ "Top 20%"),
+         income_quintile = factor(income_quintile,
+                                  levels = c("Top 20%",
+                                             "Second 20%",
+                                             "Third 20%",
+                                             "Fourth 20%",
+                                             "Bottom 20%"),
+                                  ordered = TRUE))
+```
+
 Research Questions and Hypotheses
 ==========================
 
-Words.
+Along with the provision of health care facilities to treat severe cases of COVID-19 [@Pereira2021geographic], another front in the fight against the pandemic is the rolling out of vaccination programs. The Province of Ontario, in Canada, announced on April 1st 2021 the expansion of a pilot program to offer vaccines in pharmacies in the City of Hamilton\footnote{\url{https://www.cbc.ca/news/canada/hamilton/astrazeneca-vaccine-hamilton-1.5972704}}. This program is in addition to dedicated vaccination centers for people aged 70+. Twenty pharmacies in Hamilton were added to an earlier list of 325 locations in other cities across the province, and the program was extended to people aged 55 years old and over.
 
-The objective of this paper is to investigate...Using data...we pose the following questions:
+Critics were quick to point out that the list of pharmacies approved for Hamilton were mostly located in lower density parts of the city that are not well serviced by transit and are difficult to reach by foot\footnote{See inter alia: \url{https://twitter.com/RyanMcGreal/status/1378027149790224386?s=20} and \url{https://twitter.com/NrinderWard3/status/1378679195514060801?s=20}.}. Indeed, as seen in Figure \ref{fig:pharmacies-and-regions}, a vast majority of the pharmacies are in suburban Hamilton. The issue is somewhat less clear cut when we consider that Hamilton's suburbs tend to be older (see Figure \ref{fig:population-map}). The population aged 55 to 69 in Hamilton is approximately `r prettyNum(round(population_statistics$Population_55to69[2]), big.mark = ",")` suburban, `r prettyNum(round(population_statistics$Population_55to69[3]), big.mark = ",")` urban, and only `r prettyNum(round(population_statistics$Population_55to69[3]), big.mark = ",")` rural. Given the target demographic for the program, it is possible that suburban sites could be convenient for mature and older adults. Nevertheless, the selection of sites by the province raises some important questions\footnote{The decision-making process to select these sites appears to have been opaque, and the normally inert Major of the city was caught flat footed by the announcement; see:\url{https://twitter.com/FredEisenberger/status/1378350123114242053?s=20}}. As @Yu2021sustained note, good geographical coverage is a key element for a successful vaccination campaign; at the same time, siting vaccinations sites in car-oriented locations may introduce inequities in access.
 
-- Question 1
-- Question 2
+In this research, we investigate the accessibility implications of the sites selected for the pilot vaccination program. Concretely, we ask:
 
-This paper is a reproducible research document [see @Brunsdon2020opening]; the code and data necessary to reproduce the tables and figures are available in a public repository\footnote{\url{https://github.com/paezha/Accessibility-Pharmacies-Hamilton-Vaccines}}
+- What is the estimated cost of travel to reach the vaccination sites, assuming that every person requires a vaccine?
+- What is the distribution of this cost across the population of the city?
+- How does the cost and its distribution change with the addition of candidate sites in urban Hamilton?
+
+We concentrate on the 55 to 69 years old population segment because the older 70+ group have access to other dedicated facilities besides those in the provincial pilot.
+
+```{r pharmacies-map, echo=FALSE, fig.height=5, fig.align="center", fig.cap="\\label{fig:pharmacies-and-regions}Location of pharmacies in pilot and regions with the City of Hamilton"}
+#map_pharmacies <-
+ggplot() +
+  geom_sf(data = urban_types,
+          aes(fill = Type),
+          color = "lightgray") +
+  geom_sf(data = pharmacy_locations %>%
+            filter(Type == "Pilot"),
+          shape = 17,
+          size = 2.5) +
+  scale_color_manual(values = c("Candidate" = "black",
+                                "Pilot" = "black")) +
+  scale_fill_manual(values = c("Urban" = "firebrick2",
+                               "Suburban" = "cornflowerblue",
+                               "Rural" = "forestgreen")) +
+  guides(fill = guide_legend(title = "")) + 
+  theme_minimal() +
+  theme(panel.grid = element_blank(),
+        axis.text = element_text(size = 7),
+        legend.position = "bottom",
+        legend.text = element_text(size = 8))
+
+```
+
+```{r population-map, echo=FALSE, warning=FALSE, fig.height=7, fig.align="center", fig.cap="\\label{fig:population-map}Distribution of population age 55+ in the City of Hamilton"}
+ggplot() +
+  geom_sf(data = data_da_2016 %>%
+            filter(`Region Name` == "Hamilton") %>%
+            dplyr::select(Population_55to69, Population_70plus) %>%
+            pivot_longer(cols = -geometry, names_to = "Age", values_to = "Population") %>%
+            mutate(Age = factor(Age,
+                                levels = c("Population_55to69",
+                                           "Population_70plus"),
+                                labels = c("Age: 55 to 69",
+                                           "Age: 70+"),
+                                ordered = TRUE)) %>%
+            st_as_sf(),
+          aes(fill = Population),
+          color = NA) +
+  geom_sf(data = urban_types,
+          aes(color = Type),
+          fill = NA) +
+  scale_fill_distiller(name = "Population",
+                       breaks = c(20, 50, 150, 400),
+                       palette = "OrRd", 
+                       trans = "log",
+                       direction = 1) +
+  scale_color_manual(name = "",
+                     values = c("Urban" = "firebrick2",
+                                "Suburban" = "cornflowerblue",
+                                "Rural" = "forestgreen"))  +
+  facet_wrap(~ Age, nrow = 2) +
+  theme_minimal() +
+  theme(panel.grid = element_blank(),
+        axis.text = element_text(size = 7),
+        legend.position = "bottom",
+        legend.text = element_text(size = 8))
+```
 
 Methods and Data
 ============
 
-Words.
+This paper is a reproducible research document [see @Brunsdon2020opening] conducted using open source tools for transportation analysis [@Lovelace2021open]. All code and data necessary to reproduce the tables and figures are available in a public repository\footnote{\url{https://github.com/paezha/Accessibility-Pharmacies-Hamilton-Vaccines}}.
 
 Findings
 ===================
 
+```{r minimum-travel-time-baseline, include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Retrieve the minimum travel time from a point to a pharmacy by each mode for people aged 55 to 69:
+min_ttm_car <- ttm_car %>%
+  dplyr::filter(Type == "Pilot") %>%
+  group_by(UID) %>%
+  summarize(travel_time = min(travel_time),
+            Population = first(Population_55to69),
+            Urban_type = first(Urban_type),
+            DAUID = first(DAUID),
+            TAZUID = first(TAZUID),
+            p_car = first(p_car),
+            p_transit = first(p_transit),
+            p_walk = first(p_walk),
+            .groups = "drop")
+
+min_ttm_transit <- ttm_transit %>%
+  dplyr::filter(Type == "Pilot") %>%
+  group_by(UID) %>%
+  summarize(travel_time = min(travel_time),
+            Population = first(Population_55to69),
+            Urban_type = first(Urban_type),
+            DAUID = first(DAUID),
+            TAZUID = first(TAZUID),
+            p_car = first(p_car),
+            p_transit = first(p_transit),
+            p_walk = first(p_walk),
+            .groups = "drop")
+
+min_ttm_walk <- ttm_walk %>%
+  dplyr::filter(Type == "Pilot") %>%
+  group_by(UID) %>%
+  summarize(travel_time = min(travel_time),
+            Population = first(Population_55to69),
+            Urban_type = first(Urban_type),
+            DAUID = first(DAUID),
+            TAZUID = first(TAZUID),
+            p_car = first(p_car),
+            p_transit = first(p_transit),
+            p_walk = first(p_walk),
+            .groups = "drop")
+```
+
+```{r weighted-travel-time-baseline, include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Calculate weighted travel time:
+min_ttm_car <- min_ttm_car %>%
+  mutate(weighted_travel_time = travel_time * p_car)
+
+min_ttm_transit <- min_ttm_transit %>%
+  mutate(weighted_travel_time = travel_time * p_transit)
+
+min_ttm_walk <- min_ttm_walk %>%
+  mutate(weighted_travel_time = travel_time * p_walk)
+```
+
+```{r bind-travel-time-tables-baseline, include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Bind the three tables:
+min_ttm <- rbind(min_ttm_car,
+                 min_ttm_transit,
+                 min_ttm_walk)
+```
+
+```{r aggregate-weighted-travel-times-baseline, include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Aggregate weighted travel times by mode:
+min_ttm <- min_ttm %>%
+  group_by(UID) %>%
+  summarize(DAUID = first(DAUID),
+            TAZUID = first(TAZUID),
+            Population = first(Population),
+            Urban_type = first(Urban_type),
+            weighted_travel_time = sum(weighted_travel_time))
+```
+
+```{r calculate-person-hours-travel-baseline, include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Calculate person-hours of travel:
+min_ttm <- min_ttm %>%
+  mutate(weighted_person_hours = Population * weighted_travel_time/60)
+```
+
+```{r summarize-results-by-taz-baseline, include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Summarize by TAZ and join geometry:
+min_ttm_taz <- min_ttm %>%
+  group_by(TAZUID) %>%
+  summarize(weighted_travel_time = mean(weighted_travel_time),
+            weighted_person_hours = sum(weighted_person_hours)) %>%
+  left_join(modes %>%
+              dplyr::select(TAZUID),
+            by = "TAZUID") %>%
+  st_as_sf()
+```
+
+```{r include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Map weighted travel time:
+ggplot() +
+  geom_sf(data = min_ttm_taz,
+          aes(fill = weighted_travel_time),
+          color = NA) +
+  geom_sf(data = hamilton_cma,
+          fill = NA) +
+  scale_fill_distiller(palette = "OrRd", 
+                       direction = 1)
+```
+
+```{r include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Map weighted person-hours of travel:
+ggplot() +
+  geom_sf(data = min_ttm_taz,
+          aes(fill = weighted_person_hours),
+          color = NA) +
+  geom_sf(data = hamilton_cma,
+          fill = NA) +
+  scale_fill_distiller(palette = "OrRd", 
+                       direction = 1)
+```
+
+```{r join-income-information-baseline, include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Join median household information to table:
+min_ttm <- min_ttm %>%
+  left_join(data_da_2016 %>%
+              st_drop_geometry() %>%
+              dplyr::transmute(DAUID = GeoUID,
+                               income_quintile),
+            by = "DAUID")
+```
+
+```{r plot-distribution-travel-time-by-income-baseline, include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Distribution of weighted travel time by income:
+ttm_income_baseline <- ggplot(data = min_ttm, 
+       aes(x = weighted_travel_time, 
+           color= income_quintile)) +
+  geom_density(size = 0.5, adjust = 2.5) +
+  labs(x = "Travel time (in minutes; weighted by mode)") +
+  scale_color_manual(values = c("Top 20%" = "blue",
+                                "Second 20%" = "steelblue1",
+                                "Third 20%" = "gray40", 
+                                "Fourth 20%" = "tomato",
+                                "Bottom 20%" = "red")) +
+  theme_minimal() +
+  theme(text = element_text(size = 7),
+        legend.text = element_text(size = 7))
+```
+
+```{r plot-distribution-travel-time-by-region-baseline, include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Distribution of weighted travel time by region:
+ttm_region_baseline <- ggplot(data = min_ttm %>%
+                                drop_na(Urban_type), 
+       aes(x = weighted_travel_time, 
+           color= Urban_type)) +
+  geom_density(size = 0.5, adjust = 3) +
+  labs(x = "Travel time (in minutes; weighted by mode)") +
+  scale_color_manual(name = "",
+                     values = c("Urban" = "firebrick2",
+                                "Suburban" = "cornflowerblue",
+                                "Rural" = "forestgreen"))  +
+  theme_minimal() +
+  theme(text = element_text(size = 7),
+        legend.text = element_text(size = 7))
+```
+
+```{r total-weighted-person-hours-by-group-baseline, include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Total weighted person-hours by income:
+person_hours_income_baseline <- min_ttm %>%
+  group_by(income_quintile) %>%
+  summarize(total_weighted_person_hours = sum(weighted_person_hours),
+            total_population = sum(Population),
+            .groups = "drop") %>%
+  mutate(ratio = total_weighted_person_hours/total_population) %>%
+  rename(group = income_quintile)
+
+## Total weighted person-hours by region:
+person_hours_region_baseline <- min_ttm %>%
+  group_by(Urban_type) %>%
+  summarize(total_weighted_person_hours = sum(weighted_person_hours),
+            total_population = sum(Population),
+            .groups = "drop") %>%
+  drop_na() %>%
+  mutate(ratio = total_weighted_person_hours/total_population) %>%
+  rename(group = Urban_type)
+
+person_hours_baseline <- rbind(person_hours_income_baseline,
+                               person_hours_region_baseline)
+```
+
+```{r minimum-travel-time, include=FALSE}
+# Scenario analysis (PILOT AND CANDIDATE LOCATIONS)
+## Retrieve the minimum travel time from a point to a pharmacy by each mode for people aged 55 to 69:
+min_ttm_car <- ttm_car %>%
+  #dplyr::filter(Type == "Pilot") %>%
+  group_by(UID) %>%
+  summarize(travel_time = min(travel_time),
+            Population = first(Population_55to69),
+            Urban_type = first(Urban_type),
+            DAUID = first(DAUID),
+            TAZUID = first(TAZUID),
+            p_car = first(p_car),
+            p_transit = first(p_transit),
+            p_walk = first(p_walk),
+            .groups = "drop")
+
+min_ttm_transit <- ttm_transit %>%
+  #dplyr::filter(Type == "Pilot") %>%
+  group_by(UID) %>%
+  summarize(travel_time = min(travel_time),
+            Population = first(Population_55to69),
+            Urban_type = first(Urban_type),
+            DAUID = first(DAUID),
+            TAZUID = first(TAZUID),
+            p_car = first(p_car),
+            p_transit = first(p_transit),
+            p_walk = first(p_walk),
+            .groups = "drop")
+
+min_ttm_walk <- ttm_walk %>%
+  #dplyr::filter(Type == "Pilot") %>%
+  group_by(UID) %>%
+  summarize(travel_time = min(travel_time),
+            Population = first(Population_55to69),
+            Urban_type = first(Urban_type),
+            DAUID = first(DAUID),
+            TAZUID = first(TAZUID),
+            p_car = first(p_car),
+            p_transit = first(p_transit),
+            p_walk = first(p_walk),
+            .groups = "drop")
+```
+
+```{r weighted-travel-time, include=FALSE}
+# Scenario analysis (PILOT AND CANDIDATE LOCATIONS)
+## Calculate weighted travel time:
+min_ttm_car <- min_ttm_car %>%
+  mutate(weighted_travel_time = travel_time * p_car)
+
+min_ttm_transit <- min_ttm_transit %>%
+  mutate(weighted_travel_time = travel_time * p_transit)
+
+min_ttm_walk <- min_ttm_walk %>%
+  mutate(weighted_travel_time = travel_time * p_walk)
+```
+
+```{r bind-travel-time-tables, include=FALSE}
+# Scenario analysis (PILOT AND CANDIDATE LOCATIONS)
+## Bind the three tables:
+min_ttm <- rbind(min_ttm_car,
+                 min_ttm_transit,
+                 min_ttm_walk)
+```
+
+```{r aggregate-weighted-travel-times, include=FALSE}
+# Scenario analysis (PILOT AND CANDIDATE LOCATIONS)
+## Aggregate weighted travel times by mode:
+min_ttm <- min_ttm %>%
+  group_by(UID) %>%
+  summarize(DAUID = first(DAUID),
+            TAZUID = first(TAZUID),
+            Population = first(Population),
+            Urban_type = first(Urban_type),
+            weighted_travel_time = sum(weighted_travel_time))
+```
+
+```{r calculate-person-hours-travel, include=FALSE}
+# Scenario analysis (PILOT AND CANDIDATE LOCATIONS)
+## Calculate person-hours of travel:
+min_ttm <- min_ttm %>%
+  mutate(weighted_person_hours = Population * weighted_travel_time/60)
+```
+
+```{r summarize-results-by-taz, include=FALSE}
+# Scenario analysis (PILOT AND CANDIDATE LOCATIONS)
+## Summarize by TAZ and join geometry:
+min_ttm_taz <- min_ttm %>%
+  group_by(TAZUID) %>%
+  summarize(weighted_travel_time = mean(weighted_travel_time),
+            weighted_person_hours = sum(weighted_person_hours)) %>%
+  left_join(modes %>%
+              dplyr::select(TAZUID),
+            by = "TAZUID") %>%
+  st_as_sf()
+```
+
+```{r include=FALSE}
+# Scenario analysis (PILOT AND CANDIDATE LOCATIONS)
+## Map weighted travel time:
+ggplot() +
+  geom_sf(data = min_ttm_taz,
+          aes(fill = weighted_travel_time),
+          color = NA) +
+  geom_sf(data = hamilton_cma,
+          fill = NA) +
+  scale_fill_distiller(palette = "OrRd", 
+                       direction = 1)
+```
+
+```{r include=FALSE}
+# Scenario analysis (PILOT AND CANDIDATE LOCATIONS)
+## Map weighted person-hours of travel:
+ggplot() +
+  geom_sf(data = min_ttm_taz,
+          aes(fill = weighted_person_hours),
+          color = NA) +
+  geom_sf(data = hamilton_cma,
+          fill = NA) +
+  scale_fill_distiller(palette = "OrRd", 
+                       direction = 1)
+```
+
+```{r join-income-information, include=FALSE}
+# Scenario analysis (PILOT AND CANDIDATE LOCATIONS)
+## Join median household information to table:
+min_ttm <- min_ttm %>%
+  left_join(data_da_2016 %>%
+              st_drop_geometry() %>%
+              dplyr::transmute(DAUID = GeoUID,
+                               income_quintile),
+            by = "DAUID")
+```
+
+```{r plot-distribution-travel-time-by-income, include=FALSE}
+# Scenario analysis (PILOT AND CANDIDATE LOCATIONS)
+## Distribution of weighted travel time by income:
+ttm_income <- ggplot(data = min_ttm, 
+       aes(x = weighted_travel_time, 
+           color= income_quintile)) +
+  geom_density(size = 0.5, adjust = 2.5) +
+  labs(x = "Travel time (in minutes; weighted by mode)") +
+  scale_color_manual(name = "Income quintile",
+                     values = c("Top 20%" = "blue",
+                                "Second 20%" = "steelblue1",
+                                "Third 20%" = "gray40", 
+                                "Fourth 20%" = "tomato",
+                                "Bottom 20%" = "red")) +
+  theme_minimal() +
+  theme(text = element_text(size = 7),
+        legend.text = element_text(size = 7))
+```
+
+```{r plot-distribution-travel-time-by-region, include=FALSE}
+# Scenario analysis (PILOT AND CANDIDATE LOCATIONS)
+## Distribution of weighted travel time by region:
+ttm_region <- ggplot(data = min_ttm %>%
+                                drop_na(Urban_type), 
+       aes(x = weighted_travel_time, 
+           color= Urban_type)) +
+  geom_density(size = 0.5, adjust = 3) +
+  labs(x = "Travel time (in minutes; weighted by mode)") +
+  scale_color_manual(name = "Region",
+                     values = c("Urban" = "firebrick2",
+                                "Suburban" = "cornflowerblue",
+                                "Rural" = "forestgreen"))  +
+  theme_minimal() +
+  theme(text = element_text(size = 7),
+        legend.text = element_text(size = 7))
+```
+
+```{r total-weighted-person-hours-by-group, include=FALSE}
+# Scenario analysis (PILOT AND CANDIDATE LOCATIONS)
+## Total weighted person-hours by income:
+person_hours_income <- min_ttm %>%
+  group_by(income_quintile) %>%
+  summarize(total_weighted_person_hours = sum(weighted_person_hours),
+            total_population = sum(Population),
+            .groups = "drop") %>%
+  mutate(ratio = total_weighted_person_hours/total_population) %>%
+  rename(group = income_quintile)
+
+## Total weighted person-hours by region:
+person_hours_region <- min_ttm %>%
+  group_by(Urban_type) %>%
+  summarize(total_weighted_person_hours = sum(weighted_person_hours),
+            total_population = sum(Population),
+            .groups = "drop") %>%
+  drop_na() %>%
+  mutate(ratio = total_weighted_person_hours/total_population) %>%
+  rename(group = Urban_type)
+
+person_hours <- rbind(person_hours_income,
+                      person_hours_region)
+```
+
 Words.
+
+```{r figure-results, echo=FALSE, warning=FALSE, fig.height=4, fig.align="center", fig.cap="\\label{fig:results}Distribution of travel time (weighted by mode) for different population groups"}
+grid.arrange(ttm_income_baseline + 
+               ggtitle("By income: Pilot Program") + 
+               labs(x = "") + 
+               xlim(c(0,40)) +
+               theme(title = element_text(size = 8), 
+                     axis.text = element_text(size = 7), 
+                     legend.position = "none"), 
+             ttm_income + 
+               ggtitle("By income: Scenario") + 
+               labs(x = "", y = "") + 
+               xlim(c(0,40)) +
+               theme(title = element_text(size = 8), 
+                     axis.text = element_text(size = 7)), 
+             ttm_region_baseline + 
+               ggtitle("By region: Pilot Program") + 
+               xlim(c(0,40)) +
+               theme(title = element_text(size = 8),
+                     axis.title = element_text(size = 8), 
+                     axis.text = element_text(size = 7), 
+                     legend.position = "none"), 
+             ttm_region + 
+               ggtitle("By region: Scenario") + 
+               labs(y = "") +
+               xlim(c(0,40)) +
+               theme(title = element_text(size = 8),
+                     axis.title = element_text(size = 8), 
+                     axis.text = element_text(size = 7)), 
+             nrow = 2)
+```
+
+```{r table-results, echo=FALSE}
+cbind(person_hours_baseline %>%
+        dplyr::select(group, total_population, total_weighted_person_hours, ratio), 
+      person_hours %>%
+        dplyr::select(total_weighted_person_hours, ratio)) %>%
+  kable("latex",
+        booktabs = TRUE,
+        col.names = c("Group", 
+                      "Population", 
+                      "Total PHT", 
+                      "Hours per person", 
+                      "Total PHT",
+                      "Hours per person"),
+        digits = 3,
+        align = c("lccccc"),
+        caption = "\\label{tab:distribution-results}Distribution of person hours travelled (PHT) by median total household income and region: pilot locations only, and scenario with three urban locations added") %>% 
+  add_header_above(c(" " = 2, "Pilot Program" = 2, "Scenario" = 2)) %>%
+  kable_styling(latex_options = c("striped", "scale_down")) %>%
+  pack_rows("Income Quintile", 1, 5) %>%
+  pack_rows("Region", 6, 8) %>%
+  footnote(general = "The population totals differ due to small differences in the classification of the regions")
+```
+
 
 References {#references .unnumbered}
 ==========

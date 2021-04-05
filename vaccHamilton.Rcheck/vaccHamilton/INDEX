@@ -12,4 +12,5 @@ pharmacy_locations      Location of pharmacies offering COVID-19
 ttm_car                 Travel Time Matrix Car
 ttm_transit             Travel Time Matrix Transit
 ttm_walk                Travel Time Matrix Walking
+urban_types             Urban types
 vaccHamilton            vaccHamilton
