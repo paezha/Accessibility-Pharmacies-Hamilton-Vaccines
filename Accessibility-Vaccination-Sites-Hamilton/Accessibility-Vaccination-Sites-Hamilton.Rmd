@@ -890,6 +890,31 @@ ggplot() +
         legend.text = element_text(size = 8))
 
 ggsave("images/population-map.jpeg")
+
+ggplot() +
+  geom_sf(data = data_da_2016 %>%
+            filter(`Region Name` == "Hamilton"),
+          aes(fill = Population_55to69),
+          color = NA) +
+  geom_sf(data = urban_types,
+          aes(color = Type),
+          fill = NA) +
+  scale_fill_distiller(name = "Population aged 55 to 69",
+                       breaks = c(20, 50, 150, 400),
+                       palette = "OrRd", 
+                       trans = "log",
+                       direction = 1) +
+  scale_color_manual(name = "",
+                     values = c("Urban" = "firebrick2",
+                                "Suburban" = "cornflowerblue",
+                                "Rural" = "forestgreen")) +
+  theme_minimal() +
+  theme(panel.grid = element_blank(),
+        axis.text = element_text(size = 7),
+        legend.position = "bottom",
+        legend.text = element_text(size = 8))
+
+ggsave("images/population-55-to-69-map.jpeg")
 ```
 
 Methods
