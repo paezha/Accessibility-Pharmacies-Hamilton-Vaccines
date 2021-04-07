@@ -372,6 +372,14 @@ min_ttm <- rbind(min_ttm_car,
                  min_ttm_walk)
 ```
 
+```{r weighted-travel-time-by-mode-baseline, include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Bind the three tables and label them by mode:
+min_ttm_mode_baseline <- rbind(data.frame(min_ttm_car, Mode = "Car"),
+                               data.frame(min_ttm_transit, Mode = "Transit"),
+                               data.frame(min_ttm_walk, Mode = "Walking"))
+```
+
 ```{r aggregate-weighted-travel-times-baseline, include=FALSE}
 # Baseline analysis (PILOT LOCATIONS ONLY)
 ## Aggregate weighted travel times by mode:
@@ -588,6 +596,14 @@ min_ttm <- rbind(min_ttm_car,
                  min_ttm_walk)
 ```
 
+```{r weighted-travel-time-by-mode, include=FALSE}
+# Baseline analysis (PILOT LOCATIONS ONLY)
+## Bind the three tables and label them by mode:
+min_ttm_mode <- rbind(data.frame(min_ttm_car, Mode = "Car"),
+                      data.frame(min_ttm_transit, Mode = "Transit"),
+                      data.frame(min_ttm_walk, Mode = "Walking"))
+```
+
 ```{r aggregate-weighted-travel-times, include=FALSE}
 # Scenario analysis (PILOT AND CANDIDATE LOCATIONS)
 ## Aggregate weighted travel times by mode:
@@ -725,6 +741,20 @@ table_comparison <- cbind(person_hours_baseline %>%
       person_hours %>%
         dplyr::select(total_weighted_person_hours, ratio))
 ```
+
+```{r comparison-travel-time-by-mode, echo=FALSE}
+# Comparison of weighted travel times by mode between pilot and scenario
+min_ttm_mode_baseline %>%
+  group_by(Mode) %>%
+  summarize(pht_mode = sum(Population * weighted_travel_time/60),
+            .groups = "drop")
+
+min_ttm_mode %>%
+  group_by(Mode) %>%
+  summarize(pht_mode = sum(Population * weighted_travel_time/60),
+            .groups = "drop")
+```
+
 
 Questions
 ==========================
