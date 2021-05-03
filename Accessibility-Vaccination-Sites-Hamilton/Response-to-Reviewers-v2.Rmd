@@ -1,0 +1,64 @@
+---
+title: "Response to Reviewers"
+author: "Antonio Paez & Christopher D. Higgins"
+date: "5/11/2020"
+output: pdf_document
+---
+
+We would like to thank two anonymous reviewers for their comments and suggestions for revisions. In this letter we respond to those comments and explain how the paper was revised in response.
+
+\newpage
+
+# Reviewer 1
+
+This article examines the accessibility implications of a pilot COVID-19 vaccination program for adults age 55+ (focusing on adults age 55–69) in Hamilton, Ontario. It makes a timely contribution to accessibility literature, generally, and to a small but growing body of scholarship more specifically related to accessing the COVID-19 vaccine. This article is certainly publishable, but would benefit from minor revisions. I present some suggestions and comments following that the authors might consider as they revise the piece:
+
+>\textcolor{blue}{Thank you for your positive assessment of the paper and suggestions for improvements. We feel that the paper is better with the revisions suggested.}
+
+• Please clarify from the outset of the article that you all are measuring “cost of travel” in travel time.
+
+>\textcolor{blue}{We have done this, starting from the abstract.}
+
+• The initial description of the pilot program is a bit unclear. By my understanding, 20 pharmacies in Hamilton were added as vaccination sites, and people age 55+ qualified to be vaccinated at these 20 pharmacies. People age 55–69 do not qualify at the other 325 locations mentioned, correct? I suggest you all clarify this. Also, the authors very briefly mention mobile vaccination pop-up clinics at the end of the article. Who’s eligible for these? Where are they? How many are there? I think the analysis in your article is scoped appropriately, but I do wonder whether the accessibility “gains” garnered by this pilot program matter too much in the grand scheme, particularly if so many other stationary/mobile clinics are available or are likely to become available to the 55+ age group (or even more age groups) soon. I suppose I’m asking that the authors clarify the importance of understanding and analyzing this pilot program in light of the greater vaccine rollout in the area.
+
+>\textcolor{blue}{We are grateful for this comment. In trying to be concise we did not manage to be clear, and we appreciate the opportunity to clarify. In this respect, it is important to note that the City of Hamilton operated dedicated vaccination sites for people 70+ and mobile pop-up clinics for people 75+\footnote{\url{https://www.hamilton.ca/government-information/news-centre/news-releases/hamiltons-covid-19-vaccination-program-expansion-1}}; however, it did not have any province-approved pharmacies as part of the pharmacy vaccination program until April 1st, when we began this research. The 325 pharmacies mentioned were all in other cities in Ontario, the closest of which is Toronto. In this way, the pilot greatly expanded access to the vaccine in the City of Hamilton, however our analysis suggests that the selection of sites was inequitable, requiring lower income populations in the city center and rural populations to travel much longer to reach a vaccination site. We revised the introduction and hope that the revisions will provide sufficient clarity with respect to the program and its relevance.}
+
+• The authors write, “As Yu et al. (2021) note, good geographical coverage is a key element for a successful vaccination campaign; at the same time, siting vaccinations sites in car-oriented locations may lead to inequities in access.” I understand word count is limited, but I encourage the authors to provide more discussion here of why this “may lead to inequities in access” and who, exactly, is likely to reap the benefits and bear the costs of these inequities.
+
+>\textcolor{blue}{We provide more discussion about this in the introduction, in effect previewing our hypotheses for the paper.}
+
+• The travel time threshold/walking distance cutoff values seem rather large. Did you test or consider other, smaller values?
+
+>\textcolor{blue}{The thresholds were used to calculate the travel time tables. Since we don't know the distribution of travel times a priori, a conservative approach to ensure that every parcel can reach at least one pharmacy is to use large thresholds when running the routing algorithm. After the travel time tables have been processed the thresholds are not relevant, because the analysis is based on travel time to the nearest pharmacy. As seen in Figure 4 of the original paper, the longest trip to the nearest pharmacy from any location is approximately 40 minutes (i.e., there are lots of superfluous origin-destination pairs in our time tables).}
+
+• The expected travel time incorporating weighted sums given the modal split in a TAZ is interesting. Did you consider analyzing/presenting findings for different modes discretely, which might highlight intramode inequities more clearly? I’m mostly curious—I do think the authors’ approach using the weighted sums capturing, in theory, travel time by all modes is a valid and interesting approach.
+
+>\textcolor{blue}{Thank you for this excellent suggestion. We now report the estimated travel times by mode with the twenty pharmacies and with the proposed additions. The additions reduce travel time for every mode, but the largest reductions are for transit and walking. At a time when mobility is limited to essential travel, it clearly is in the public interest to reduce the need to travel longer by any mode.}
+
+• I find it more interpretable and impactful when you all present travel time results measured in minutes rather than in person-hours. I understand needing the person-hours results as a cumulative, individual-based measure to compare across income and region classes. However, as a reader, I do find the person-hours analysis to be harder to understand than the travel time analysis. I suggest the authors put some more thought towards explaining, particularly, the person-hours analysis results clearly.
+
+>\textcolor{blue}{We agree. The cumulative values are easier to understand in hours, but at the individual level it is less intuitive to say "0.09 hours". We have adjusted this in the revised paper.}
+
+• I like the idea of the comparison scenario, but wonder how the scenario sites were chosen. Could the three sites feasibly serve as vaccination sites? Were these locations “optimized” in any way to lead to greater reductions in travel time disparities? Were they randomly chosen? I think more is needed to clarify this scenario experiment/analysis for the reader.
+
+>\textcolor{blue}{The three sites we use for the scenario are existing pharmacies and of chains used by the provine elsewhere for the pilot, so they are definitely feasible for the program. We did not use any systematic approach to select these sites, we just went with three reasonable sites. The fact that three sites chosen in a reasonable but not systematic way can lead to such important reductions is telling about the effort that the province put in the selection of sites for the program. There are certainly better ways of approaching this issue (for instance, by designing optimal accessibility landscapes, see Paez et al., 2013) but we feel that designing optimal landscapes is beyond the scope of a short findings paper, since the finding that we wish to report is the inequity in the roll-out of the program.}
+
+• The article would benefit from proofreading for spelling and grammar errors, as well as some issues with general fluency and, especially, clarity of language. For instance, I suggest “do not serve well urban and rural residents,” be rephrased as, “do not serve urban and rural residents well.” Also, a (potentially important) typo in Methods: “Using the population aged 55 to 59 y.o.”—do you all mean 55 to 69 y.o.?
+
+>\textcolor{blue}{We proofread the paper and hopefully the overall writing is improved. In the methods we did indeed mean 55 to 69 y.o.; this has been fixed in the revision.}
+
+• The authors should note that the Findings guidelines state, “All articles have a maximum of 1000 words of text, exclusive of References. In addition, there is a maximum figure count of 3, and maximum table count of 3.” I am not sure of the article’s current word count, but I do notice the article includes 4 figures. The authors might consider combining Figures 1 and 2 by layering the vaccination site locations atop the population distribution maps (although, this might look busy). Figure 2 might, alternatively, be included as supplemental information.
+
+>\textcolor{blue}{We tried layering the locations of the pharmacies on the population maps, but legibility is severely compromised. We are open to including some of the figures as supplemental information at the pleasure of the editor. Perhaps the editor is willing to trade one figure for one table? (we only have two tables in the paper and both are relatively compact).}
+
+I am glad to have had the opportunity to review this interesting paper!
+
+>\textcolor{blue}{Thank you again for you suggestions, and the opportunity to revise and improve the paper.}
+
+\newpage
+
+# Reviewer 2
+
+This paper looks at a location allocation issue that has been studied before in geograohy for several decades, where to place new facilities ti reduce travel and increase access to heakthcare in a region. The study finds that rural and low income are poorly srved and big burden of travel falls on these groups and they offer the location of new sites for vaccinations to decrease such burden. The paper depnds ona major assumotion that those who commuted by mode X will commute by the same mode for vaccination, which is not true, if COVID has shiwn us something is new travel behaviour emerge and peopel are switching modes so this assumption need to be highlighted as a major limitation. it could have been better to see a map with the old sites alone, with new sites added and have the background as the collective travel time this will enable the reader to visualize the impact spatially.
+
+>>\textcolor{blue}{Thank you for these comments. Both authors are familiar with the literature on accessibility to healthcare, having contributed to it as recently as 2019. The findings that we wish to report here concern the specific situation of the vaccination pilot in Ontario. This is a policy-relevant issue for which there is no empirical information available besides this paper. We agree that a limitation of the analysis is that we assume all demographic/travel behavior patterns are stable since 2016. This assumption was already highlighted in the original paper (and aren't all assumptions limitations by definition?); in the revision we  redouble our effort to highlight this issue more explicitly as a limitation. We are aware that travel behavior for routine activities has changed during the pandemic (the first author has researched this in, for example, Paez, 2020, and Jamal and Paez, 2020, both papers published in Findings). But travel to get an essential vaccine is not necessarily a routine, quotidiane sort of travel behavior. We do not really know (at least for the region under study) how behavior for non-routine travel may have changed during the pandemic since we know relatively little about non-routine travel to begin with. In principle, it seems possible to do scenario analysis, but for this we would need to make up numbers regarding modal shares during the pandemic, and such an endeavor is not without problems either - besides probably requiring a substantially longer paper. We plotted the locations of the pharmacies in the travel time maps for ease of visualization.}
