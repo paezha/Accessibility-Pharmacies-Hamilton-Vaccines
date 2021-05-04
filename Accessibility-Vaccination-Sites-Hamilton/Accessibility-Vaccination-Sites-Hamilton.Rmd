@@ -52,6 +52,7 @@ if (!require("vaccHamilton", character.only = TRUE)) {
 library(grid)
 library(gridExtra)
 library(kableExtra)
+library(patchwork)
 library(png)
 library(sf)
 library(tidyverse)
@@ -904,7 +905,7 @@ ggplot() +
         legend.text = element_text(size = 8))
 ```
 
-```{r save-population-map, include=FALSE}
+```{r save-population-map, include=FALSE, fig.height=8, dpi=300}
 ggplot() +
   geom_sf(data = data_da_2016 %>%
             filter(`Region Name` == "Hamilton") %>%
@@ -1056,9 +1057,8 @@ grid.arrange(ttm_map_baseline +
              nrow = 2)
 ```
 
-```{r save-figure-maps-baseline, include=FALSE}
-jpeg(filename = "images/baseline-maps.jpeg")
-grid.arrange(ttm_map_baseline +
+```{r save-figure-maps-baseline, include=FALSE, fig.height=8, dpi=600}
+ttm_plot <- ttm_map_baseline +
                geom_sf(data = pharmacy_locations %>%
                          dplyr::filter(Type == "Pilot"),
                        shape = 17,
@@ -1079,8 +1079,9 @@ grid.arrange(ttm_map_baseline +
                        show.legend = FALSE) +
                theme(legend.title = element_text(size = 8),
                      legend.text = element_text(size = 7), 
-                     axis.text = element_text(size = 7)),
-             pht_map_baseline  +
+                     axis.text = element_text(size = 7))
+
+pht_plot <- pht_map_baseline  +
                geom_sf(data = pharmacy_locations %>%
                          dplyr::filter(Type == "Pilot"),
                        shape = 17,
@@ -1101,15 +1102,11 @@ grid.arrange(ttm_map_baseline +
                        show.legend = FALSE) +
                theme(legend.title = element_text(size = 8),
                      legend.text = element_text(size = 7), 
-                     axis.text = element_text(size = 7)),
-             nrow = 2)
-dev.off()
+                     axis.text = element_text(size = 7))
 
-ttm_map_baseline
-ggsave("images/ttm-baseline-map.jpeg")
+ttm_plot/pht_plot
 
-pht_map_baseline
-ggsave("images/pht-baseline-map.jpeg")
+ggsave("images/baseline-maps.jpeg")
 ```
 
 ```{r table-results, echo=FALSE}
@@ -1177,60 +1174,41 @@ grid.arrange(ttm_income_baseline +
              nrow = 2)
 ```
 
-```{r save-figure-results, include=FALSE}
-jpeg(filename = "images/figure-results.jpeg")
-grid.arrange(ttm_income_baseline + 
+```{r save-figure-results, include=FALSE, fig.height=8, dpi=900}
+ttm_income_baseline <- ttm_income_baseline + 
                ggtitle("By income: Pilot Program") + 
                labs(x = "") + 
                xlim(c(0,40)) +
                theme(title = element_text(size = 8), 
                      axis.text = element_text(size = 7), 
-                     legend.position = "none"), 
-             ttm_income + 
+                     legend.position = "none")
+
+ttm_income <- ttm_income + 
                ggtitle("By income: Scenario") + 
                labs(x = "", y = "") + 
                xlim(c(0,40)) +
                theme(title = element_text(size = 8), 
-                     axis.text = element_text(size = 7)), 
-             ttm_region_baseline + 
+                     axis.text = element_text(size = 7)) 
+
+ttm_region_baseline <- ttm_region_baseline + 
                ggtitle("By region: Pilot Program") + 
                xlim(c(0,40)) +
                theme(title = element_text(size = 8),
                      axis.title = element_text(size = 8), 
                      axis.text = element_text(size = 7), 
-                     legend.position = "none"), 
-             ttm_region + 
+                     legend.position = "none")
+
+ttm_region <- ttm_region + 
                ggtitle("By region: Scenario") + 
                labs(y = "") +
                xlim(c(0,40)) +
                theme(title = element_text(size = 8),
                      axis.title = element_text(size = 8), 
-                     axis.text = element_text(size = 7)), 
-             nrow = 2)
-dev.off()
+                     axis.text = element_text(size = 7))
 
-ttm_income_baseline + 
-               ggtitle("By income: Pilot Program") + 
-               labs(x = "") + 
-               xlim(c(0,40))
-ggsave("images/ttm-income-pilot.jpeg")
+(ttm_income_baseline + ttm_income) / (ttm_region_baseline + ttm_region)
 
-ttm_region_baseline + 
-  ggtitle("By region: Pilot Program") + 
-  xlim(c(0,40))
-ggsave("images/ttm-region-pilot.jpeg")
-
-ttm_income +
-  ggtitle("By income: Scenario") + 
-  labs(x = "", y = "") + 
-  xlim(c(0,40))
-ggsave("images/ttm-income.jpeg")
-
-ttm_region + 
-  ggtitle("By region: Scenario") + 
-  labs(y = "") +
-  xlim(c(0,40))
-ggsave("images/ttm-region.jpeg")
+ggsave("images/figure-results.jpeg")
 ```
 
 References {#references .unnumbered}
