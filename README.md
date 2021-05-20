@@ -9,7 +9,7 @@
 Antonio Páez (McMaster University)  
 Christopher D. Higgins (University of Toronto Scarborough)
 
-Paper submitted to *Transport Findings*
+Findings (2020) <https://doi.org/10.32866/001c.24082>
 
 ## Abstract
 
